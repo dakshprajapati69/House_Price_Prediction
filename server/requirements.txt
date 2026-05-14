@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+numpy
+scikit-learn
+pandas
+<<<<<<< HEAD:server/requirements..txt
+python-multipart
+=======
+python-multipart
+>>>>>>> bd55e069e5396d5391772cd7663d3995c9bf3a3c:server/requirements.txt.txt
