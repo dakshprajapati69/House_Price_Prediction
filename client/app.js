@@ -8,7 +8,9 @@
 "use strict";
 
 /* ── CONSTANTS ─────────────────────────────────────────────── */
-const API_BASE     = "http://127.0.0.1:8000";
+// const API_BASE     = "http://127.0.0.1:8000";
+const API_BASE     = "https://house-price-prediction-36w5.onrender.com";
+
 // const API_BASE     = "/api";
 
 const HISTORY_KEY  = "estateiq_history";
