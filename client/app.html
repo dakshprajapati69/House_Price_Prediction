@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>House Price Prediction</title>
+  <link rel="stylesheet" href="app.css" />
+  <!-- Google Fonts: Clash Display + DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ░░ NAVBAR ░░ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">
+        <span class="brand-icon">⬡</span>
+        <span class="brand-text">House Price Prediction</span>
+      </a>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="toggle-icon" id="themeIcon">☽</span>
+        </button>
+        <a href="#history" class="nav-link">History</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ░░ HERO ░░ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Powered by Machine Learning
+      </div>
+      <h1 class="hero-title">
+        Know Your Home's<br />
+        <em>True Worth</em>
+      </h1>
+      <p class="hero-sub">
+        Enter property details below and get an instant AI-driven price estimate
+        for any location in Bangalore.
+      </p>
+      <!-- Stat pills -->
+      <div class="stat-row">
+        <div class="stat-pill">
+          <span class="stat-num" data-target="240">0</span>
+          <span class="stat-label">Localities</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num" data-target="13000">0</span>
+          <span class="stat-label">Data Points</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num" data-target="92">0</span>
+          <span class="stat-label">% Accuracy</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <span class="scroll-arrow">↓</span>
+    </div>
+  </section>
+
+  <!-- ░░ MAIN CARD ░░ -->
+  <main class="main-section" id="estimator">
+    <div class="card glass-card">
+
+      <!-- Card Header -->
+      <div class="card-header">
+        <h2 class="card-title">Estimate Price</h2>
+        <p class="card-subtitle">Fill in the details to get your instant valuation</p>
+      </div>
+
+      <!-- Form -->
+      <form class="predict-form" id="predictForm" novalidate>
+
+        <!-- Row 1: sqft + bhk -->
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="sqft">
+              <span class="label-icon">⊡</span> Total Area
+            </label>
+            <div class="input-wrap">
+              <input
+                type="number"
+                id="sqft"
+                class="field-input"
+                placeholder="e.g. 1200"
+                min="100"
+                max="50000"
+                required
+              />
+              <span class="input-unit">sq.ft</span>
+            </div>
+            <span class="field-error" id="sqftError"></span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="bhk">
+              <span class="label-icon">⊞</span> BHK
+            </label>
+            <div class="input-wrap">
+              <input
+                type="number"
+                id="bhk"
+                class="field-input"
+                placeholder="e.g. 2"
+                min="1"
+                max="10"
+                required
+              />
+              <span class="input-unit">rooms</span>
+            </div>
+            <span class="field-error" id="bhkError"></span>
+          </div>
+        </div>
+
+        <!-- Row 2: bath + location -->
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="bath">
+              <span class="label-icon">⊙</span> Bathrooms
+            </label>
+            <div class="input-wrap">
+              <input
+                type="number"
+                id="bath"
+                class="field-input"
+                placeholder="e.g. 2"
+                min="1"
+                max="10"
+                required
+              />
+              <span class="input-unit">baths</span>
+            </div>
+            <span class="field-error" id="bathError"></span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="location">
+              <span class="label-icon">◎</span> Location
+            </label>
+            <div class="input-wrap select-wrap">
+              <select id="location" class="field-input field-select" required>
+                <option value=fetchLocations() disabled selected>Loading locations…</option>
+              </select>
+              <span class="select-arrow">⌄</span>
+            </div>
+            <span class="field-error" id="locationError"></span>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span class="btn-text">Estimate Price</span>
+          <span class="btn-loader" id="btnLoader" hidden>
+            <span class="loader-dot"></span>
+            <span class="loader-dot"></span>
+            <span class="loader-dot"></span>
+          </span>
+          <span class="btn-arrow">→</span>
+        </button>
+
+      </form>
+
+      <!-- Result Panel (hidden until prediction) -->
+      <div class="result-panel" id="resultPanel" hidden>
+        <div class="result-divider">
+          <span class="divider-label">Estimated Value</span>
+        </div>
+        <div class="result-body">
+          <div class="result-currency">₹</div>
+          <div class="result-amount" id="resultAmount">—</div>
+          <div class="result-unit">Lakhs</div>
+        </div>
+        <p class="result-note" id="resultNote"></p>
+        <button class="reset-btn" id="resetBtn">Start New Estimate</button>
+      </div>
+
+    </div><!-- /card -->
+  </main>
+
+  <!-- ░░ PREDICTION HISTORY ░░ -->
+  <section class="history-section" id="history">
+    <div class="history-header">
+      <h2 class="section-title">Recent Estimates</h2>
+      <button class="clear-btn" id="clearHistoryBtn">Clear All</button>
+    </div>
+    <div class="history-grid" id="historyGrid">
+      <!-- Populated by JS -->
+      <p class="history-empty" id="historyEmpty">No estimates yet. Your predictions will appear here.</p>
+    </div>
+  </section>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-brand">⬡ House Price Prediction</span>
+      <span class="footer-powered">Powered by AI House Prediction · FastAPI Backend</span>
+      <span class="footer-copy">© 2026</span>
+    </div>
+  </footer>
+
+  <!-- ░░ TOAST CONTAINER ░░ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
